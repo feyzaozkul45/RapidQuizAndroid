@@ -10,7 +10,7 @@ Proje gereksinimleri: docs/Rapid Quiz.docx (API: rapid-quiz-backend/docs/PROJECT
 - Süre dolunca choice_id=null gönderilir; question_mismatch/question_not_served'da current-question ile eşitle
 - Her yeni ViewModel/yardımcı birim testiyle gelir
 - Metinler strings.xml'de (Türkçe)
-- Paket adı: com.example.rapidquiz (dokümandaki com.rapidquiz.app yerine mevcut proje paketi kullanılıyor)
+- Paket adı / applicationId: com.rapidquiz.app
 
 ## Komutlar
 - ./gradlew test · ./gradlew connectedAndroidTest

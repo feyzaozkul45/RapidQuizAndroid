@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.rapidquiz"
+    namespace = "com.rapidquiz.app"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.example.rapidquiz"
+        applicationId = "com.rapidquiz.app"
         minSdk = 26
         targetSdk = 37
         versionCode = 1
