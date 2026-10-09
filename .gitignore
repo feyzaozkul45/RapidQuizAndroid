@@ -13,3 +13,10 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# İmzalama anahtarları ve gizli bilgiler repoya girmez
+*.jks
+*.keystore
+keystore.properties
+*.pem
+.env
