@@ -1,12 +1,19 @@
-# Add project specific R8 rules here.
-# AGP will combine all keep rule files in src/main/keepRules to pass to R8
-#
-# For more details, see
-#   https://d.android.com/r/tools/r8/keep-rules
+# AGP, src/main/keepRules altındaki tüm dosyaları R8'e verir.
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# kotlinx.serialization: @Serializable modellerin serializer'ları ve alan adları (@SerialName) korunur.
+-keepattributes *Annotation*, InnerClasses, Signature, Exceptions, RuntimeVisibleAnnotations
+-keepclassmembers class com.rapidquiz.app.data.model.** {
+    *** Companion;
+    kotlinx.serialization.KSerializer serializer(...);
+}
+-keep,includedescriptorclasses class com.rapidquiz.app.data.model.**$$serializer { *; }
+-keepclasseswithmembers class com.rapidquiz.app.data.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+-keep class com.rapidquiz.app.data.model.** { *; }
+
+# Retrofit: arayüz metotları ve suspend fonksiyonlardaki Continuation imzası.
+-keep interface com.rapidquiz.app.data.api.RapidQuizApi { *; }
+-keepattributes RuntimeVisibleParameterAnnotations
+-dontwarn javax.annotation.**
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
