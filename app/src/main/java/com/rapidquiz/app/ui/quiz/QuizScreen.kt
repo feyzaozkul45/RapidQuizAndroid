@@ -33,8 +33,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -151,6 +160,7 @@ private fun QuestionContent(
             Text(
                 stringResource(R.string.quiz_question_of, q.position + 1, q.total),
                 style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.semantics { heading() },
             )
             Text(stringResource(R.string.quiz_score, score), style = MaterialTheme.typography.titleMedium)
         }
@@ -192,7 +202,7 @@ fun CountdownRing(remainingMs: Long, totalMs: Long) {
     val description = stringResource(R.string.quiz_seconds_left, secondsLeft)
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.size(96.dp).semantics { contentDescription = description },
+        modifier = Modifier.size(96.dp).clearAndSetSemantics { contentDescription = description },
     ) {
         CircularProgressIndicator(
             progress = { (remainingMs.toFloat() / totalMs).coerceIn(0f, 1f) },
@@ -212,7 +222,7 @@ private fun FeedbackBanner(f: QuizUiState.Feedback) {
         else -> stringResource(R.string.quiz_wrong) to WrongRed
     }
     Column(
-        modifier = Modifier.heightIn(min = 96.dp),
+        modifier = Modifier.heightIn(min = 96.dp).semantics { liveRegion = LiveRegionMode.Polite },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -243,12 +253,25 @@ fun ChoiceButton(choice: Choice, enabled: Boolean, state: ChoiceState, onClick: 
         )
         ChoiceState.Idle -> ButtonDefaults.filledTonalButtonColors()
     }
+    val stateText = when (state) {
+        ChoiceState.Correct -> stringResource(R.string.quiz_correct)
+        ChoiceState.Wrong -> stringResource(R.string.quiz_wrong)
+        else -> null
+    }
     Button(
         onClick = onClick,
         enabled = enabled,
         colors = colors,
-        modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp),
+        modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).semantics {
+            stateText?.let { stateDescription = it }
+        },
     ) {
+        // Doğru/yanlış yalnızca renkle anlatılmasın: simge de gösterilir.
+        when (state) {
+            ChoiceState.Correct -> Icon(Icons.Filled.Check, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
+            ChoiceState.Wrong -> Icon(Icons.Filled.Close, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
+            else -> Unit
+        }
         Text(choice.text, textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyLarge)
     }
 }

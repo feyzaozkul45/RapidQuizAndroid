@@ -30,6 +30,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -126,8 +128,12 @@ fun CategoryChips(categories: List<Pair<String, String>>, selected: String?, onS
 
 @Composable
 fun LeaderboardRow(entry: LeaderboardEntry) {
+    val label = stringResource(
+        if (entry.isMe) R.string.leaderboard_row_description_me else R.string.leaderboard_row_description,
+        entry.rank, entry.playerName, entry.score, entry.correctCount,
+    )
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clearAndSetSemantics { contentDescription = label },
         colors = CardDefaults.cardColors(
             containerColor = if (entry.isMe) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainer,
         ),

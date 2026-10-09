@@ -66,5 +66,7 @@
     <string name="leaderboard_header_rank">Sıra</string>
     <string name="leaderboard_header_player">Oyuncu</string>
     <string name="leaderboard_header_score">Puan</string>
+    <string name="leaderboard_row_description">%1$d. sıra, %2$s, %3$d puan, %4$d doğru</string>
+    <string name="leaderboard_row_description_me">Senin sonucun: %1$d. sıra, %2$s, %3$d puan, %4$d doğru</string>
     <string name="leaderboard_correct_count">%1$d doğru</string>
 </resources>

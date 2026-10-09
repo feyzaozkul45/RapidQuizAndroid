@@ -3,6 +3,7 @@ package com.rapidquiz.app.ui
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -32,12 +33,12 @@ class LeaderboardScreenTest {
         repo.boards["yazilim"] = Leaderboard("yazilim", listOf(entry(1, "Zeynep", 2000)))
         launch()
 
-        rule.waitUntil(5_000) { rule.onAllNodesWithTextExists("Ayşe") }
-        rule.onNodeWithText("Mehmet").assertIsDisplayed()
+        rule.waitUntil(5_000) { rule.rowExists("Ayşe") }
+        rule.onNodeWithContentDescription("Mehmet", substring = true).assertIsDisplayed()
 
         rule.onNodeWithText("Yazılım").performClick()
-        rule.waitUntil(5_000) { rule.onAllNodesWithTextExists("Zeynep") }
-        rule.onNodeWithText("2000").assertIsDisplayed()
+        rule.waitUntil(5_000) { rule.rowExists("Zeynep") }
+        rule.onNodeWithContentDescription("2000 puan", substring = true).assertIsDisplayed()
     }
 
     @Test fun showsOwnRankBelowListWhenOutsideTop10() {
@@ -49,8 +50,7 @@ class LeaderboardScreenTest {
         launch(category = "fizik", sessionId = "s1")
 
         rule.waitUntil(5_000) { rule.onAllNodesWithTextExists("Senin sıran") }
-        rule.onNodeWithText("Ben").assertIsDisplayed()
-        rule.onNodeWithText("15").assertIsDisplayed()
+        rule.onNodeWithContentDescription("Senin sonucun: 15. sıra, Ben", substring = true).assertIsDisplayed()
     }
 
     @Test fun ownRowInsideTopIsNotDuplicated() {
@@ -61,7 +61,7 @@ class LeaderboardScreenTest {
         )
         launch(category = "fizik", sessionId = "s1")
 
-        rule.waitUntil(5_000) { rule.onAllNodesWithTextExists("Ben") }
+        rule.waitUntil(5_000) { rule.rowExists("Ben") }
         assertFalse(rule.onAllNodesWithTextExists("Senin sıran"))
     }
 
