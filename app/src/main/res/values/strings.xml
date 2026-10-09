@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">Rapid Quiz</string>
+
+    <!-- Ortak -->
+    <string name="retry">Tekrar dene</string>
+    <string name="back">Geri</string>
+    <string name="home">Ana sayfa</string>
+    <string name="loading">Yükleniyor…</string>
+    <string name="waking_title">Sunucu uyanıyor, lütfen bekleyin…</string>
+    <string name="waking_body">Uzun süre kullanılmadığı için ilk istek 30–60 saniye sürebilir.</string>
+
+    <!-- Hata mesajları -->
+    <string name="error_network_error">Sunucuya ulaşılamadı. Bağlantını kontrol edip tekrar dene.</string>
+    <string name="error_rate_limited">Çok fazla istek gönderdin. Biraz bekleyip tekrar dene.</string>
+    <string name="error_category_unavailable">Bu kategoride şu an yeterli soru yok. Başka bir kategori dene.</string>
+    <string name="error_category_not_found">Kategori bulunamadı.</string>
+    <string name="error_session_not_found">Quiz oturumu bulunamadı.</string>
+    <string name="error_session_expired">Quiz oturumun hareketsizlikten dolayı sona erdi. Yeni bir quiz başlat.</string>
+    <string name="error_session_completed">Bu quiz zaten tamamlandı.</string>
+    <string name="error_session_not_completed">Bu quiz henüz bitmedi.</string>
+    <string name="error_name_already_set">Bu skor için isim zaten kaydedilmiş.</string>
+    <string name="error_name_window_closed">İsim kaydetme süresi (quiz bitiminden sonra 30 dakika) doldu.</string>
+    <string name="error_name_invalid">Bu isim kurallara uymuyor. Lütfen başka bir isim dene.</string>
+    <string name="error_validation_error">Gönderilen bilgi geçersiz.</string>
+    <string name="error_server_error">Sunucuda bir hata oluştu. Lütfen daha sonra tekrar dene.</string>
+    <string name="error_unknown">Beklenmeyen bir hata oluştu.</string>
+
+    <!-- Ana ekran -->
+    <string name="home_title">Kategoriler</string>
+    <string name="home_subtitle">Bir kategori seç, 20 soruyu soru başına 5 saniyede cevapla.</string>
+    <string name="leaderboard_open">Skor tablosu</string>
+    <string name="session_quiz_expired_notice">Quiz oturumun sona erdi.</string>
+
+    <!-- Quiz -->
+    <string name="quiz_question_of">Soru %1$d/%2$d</string>
+    <string name="quiz_score">Puan: %1$d</string>
+    <string name="quiz_seconds_left">%1$d saniye kaldı</string>
+    <string name="quiz_correct">Doğru!</string>
+    <string name="quiz_wrong">Yanlış</string>
+    <string name="quiz_timeout">Süre doldu</string>
+    <string name="quiz_too_fast">Çok hızlı! Bu cevap için puan verilmedi</string>
+    <string name="quiz_points">+%1$d puan</string>
+    <string name="quiz_exit_title">Quizden çıkılsın mı?</string>
+    <string name="quiz_exit_message">Quiz yarıda kalacak ve ilerlemen kaybolacak.</string>
+    <string name="quiz_exit_confirm">Çık</string>
+    <string name="quiz_exit_cancel">Devam et</string>
+
+    <!-- Sonuç -->
+    <string name="result_title">Sonuç</string>
+    <string name="result_score">%1$d puan</string>
+    <string name="result_correct_count">%1$d/%2$d doğru</string>
+    <string name="result_name_label">Adın</string>
+    <string name="result_name_hint">Skor tablosunda görünecek takma ad</string>
+    <string name="result_save">Kaydet</string>
+    <string name="result_name_saved">İsim kaydedildi: %1$s</string>
+    <string name="result_view_leaderboard">Skor tablosunu gör</string>
+    <string name="result_play_again">Tekrar oyna</string>
+    <string name="name_too_short">İsim en az 2 karakter olmalı.</string>
+    <string name="name_too_long">İsim en fazla 20 karakter olabilir.</string>
+    <string name="name_invalid_chars">Yalnızca harf, rakam, boşluk ve tire kullanabilirsin.</string>
+
+    <!-- Skor tablosu -->
+    <string name="leaderboard_title">Skor Tablosu</string>
+    <string name="leaderboard_empty">Bu kategoride henüz skor yok.</string>
+    <string name="leaderboard_your_rank">Senin sıran</string>
+    <string name="leaderboard_header_rank">Sıra</string>
+    <string name="leaderboard_header_player">Oyuncu</string>
+    <string name="leaderboard_header_score">Puan</string>
+    <string name="leaderboard_correct_count">%1$d doğru</string>
+</resources>
