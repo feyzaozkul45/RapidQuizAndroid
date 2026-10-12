@@ -2,4 +2,11 @@
 <resources>
 
     <style name="Theme.RapidQuiz" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- Açılış ekranı (SplashScreen API): uygulama ikonu mor zemin üzerinde; sonra Theme.RapidQuiz'e geçilir. -->
+    <style name="Theme.RapidQuiz.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.RapidQuiz</item>
+    </style>
 </resources>
