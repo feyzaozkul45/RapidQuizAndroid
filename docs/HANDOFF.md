@@ -12,23 +12,25 @@ Son güncelleme: 2026-10-12. Gereksinimler: `docs/Rapid Quiz.docx`. Kurallar: `C
 - `ON_RESUME` düzeltmesi (bkz. Bölüm 5) ve `QuizLifecycleTest`.
 - Sonuç ekranı / isim formu UI testleri (`ResultScreenTest`, 11 test).
 - `.gitignore`: keystore, `*.jks`, `*.pem`, `.env`, `keystore.properties`, `.idea/`.
+- Release imzalama: `keystore.properties` (kök, git'e girmez) varsa `signingConfig` oluşur, yoksa release imzasız kalır. `keystore.properties.example` ve `docs/SIGNING.md` var. Keystore'u kullanıcı kendisi oluşturacak (henüz oluşturulmadı).
+- Skor tablosu chip satırı seçili chip'e kaydırılır (`rememberLazyListState` + `LaunchedEffect`); `LeaderboardScreenTest.selectedChipIsScrolledIntoView`.
+- Takma ad filtresi: `util/ProfanityFilter.kt` (TR+EN kısa liste, leet/aksan/tekrar katlama, kısa kelimeler yalnızca tam sözcük). `PlayerName.validate` → `Problem.INAPPROPRIATE`. Yalnızca istemci tarafı; asıl koruma sunucuda olmalı.
+- API süre ölçümü: `androidTest/.../ApiLatencyBenchmark.kt` (bkz. Bölüm 6).
 
 ## 2. Commit'lenmemiş / doğrulanmamış değişiklikler
 Yok. Çalışma ağacı temiz olmalı (`git status`).
 Testlerin son durumu (bu dosya yazılmadan hemen önce koşuldu): `./gradlew test connectedDebugAndroidTest` → **38 birim testi + 23 UI testi, hepsi geçti**. Emülatör: `emulator-5554` (Medium_Phone).
 
 ## 3. Push durumu
-- `origin/main` (https://github.com/feyzaozkul45/RapidQuizAndroid.git) şu commit'e kadar push edildi: `e3db0d3` (koyu tema ve erişilebilirlik).
-- **Push EDİLMEDİ:** bağımlılık güncellemeleri (a, b, c), `ON_RESUME` düzeltmesi, Sonuç ekranı testleri, bu HANDOFF commit'i. Doğrulamak için: `git log origin/main..main`.
+- `origin/main` (https://github.com/feyzaozkul45/RapidQuizAndroid.git) güncel; push durumunu doğrulamak için: `git log origin/main..main`. Kullanıcı push'u her seferinde sohbette açıkça onaylar (force push yok).
 
 ## 4. Kalan işler (sıralı)
-Kullanıcının son iş mesajı 4 maddeydi (1: bağımlılıklar + release/R8 turu, 2: ON_RESUME, 3: Sonuç testleri, 4: imzalama). 1–3 bitti. Kalanlar:
-1. **İmzalama (mesajdaki 4. madde):** `app/build.gradle.kts`'e kök dizindeki `keystore.properties`'i okuyan `signingConfig` ekle (dosya yoksa build bozulmasın, unsigned kalsın). `providers.fileContents(...)` ile oku (configuration cache dosya değişimini izlesin). `keystore.properties.example` (gerçek değer yok) commit'le. Geçici keystore ile `assembleRelease` + `apksigner verify` dene, sonra geçici dosyayı sil. Kullanıcı keystore'u kendisi oluşturacak: `keytool -genkeypair -v -keystore <yol>.jks -alias rapidquiz -keyalg RSA -keysize 2048 -validity 10000` adımlarını `docs/SIGNING.md`'ye ve yanıta adım adım yaz; keystore repo dışında (ör. `C:\Users\THINKPAD\keystores\`) tutulmalı, yedeklenmeli (kaybedilirse Play'de güncelleme çıkamaz).
-2. Tüm commit'leri `origin/main`'e push et (kullanıcı ilk turda push'u onayladı; force push yok).
-3. Doküman Bölüm 12 yayın hazırlığı kalanları: mağaza metni, ekran görüntüleri, Play "Data safety" bilgisi (hesap/kişisel veri yok, yalnızca takma ad herkese açık).
-4. Elle kontrol listesi (doküman Bölüm 11): uçak modu (hata + tekrar dene), soru sırasında arka plana atma, 15 dk sonra soğuk başlangıç, 360 dp ekran, büyük yazı tipi, geri tuşu onayı. Koyu temada ✓/✕ renkleri ve TalkBack okuması gözle/gerçek cihazda doğrulanmadı.
-5. Doküman Bölüm 11 / 13'te geçen ktlint/spotless henüz kurulmadı (CLAUDE.md'den `ktlintCheck` çıkarıldı). İstenirse ekle.
-6. Compose UI tarafında henüz test yok: Ana ekran (kategori kartı → quiz başlatma). Dokümandaki "tam bir quiz turu" testi `QuizScreenTest`'te var ama Home → Quiz gezinmesi uçtan uca test edilmedi.
+İmzalama, push, chip kaydırma, isim filtresi ve süre ölçümü bitti. Kalanlar:
+1. **Soğuk başlangıç süresi ölçülmedi — bilerek.** Sunucu eğitim projesi için hocanın sunucusu; kullanıcı prod'a ek ölçüm isteği atılmamasını istedi. Tekrar ölçülmesin (kullanıcı yeniden istemedikçe).
+2. Doküman Bölüm 12 yayın hazırlığı kalanları: mağaza metni, ekran görüntüleri, Play "Data safety" bilgisi (hesap/kişisel veri yok, yalnızca takma ad herkese açık).
+3. Elle kontrol listesi (doküman Bölüm 11): uçak modu (hata + tekrar dene), soru sırasında arka plana atma, 15 dk sonra soğuk başlangıç, 360 dp ekran, büyük yazı tipi, geri tuşu onayı. Koyu temada ✓/✕ renkleri ve TalkBack okuması gözle/gerçek cihazda doğrulanmadı.
+4. Doküman Bölüm 11 / 13'te geçen ktlint/spotless henüz kurulmadı (CLAUDE.md'den `ktlintCheck` çıkarıldı). İstenirse ekle.
+5. Compose UI tarafında henüz test yok: Ana ekran (kategori kartı → quiz başlatma). Dokümandaki "tam bir quiz turu" testi `QuizScreenTest`'te var ama Home → Quiz gezinmesi uçtan uca test edilmedi.
 
 ## 5. Teknik kararlar ve tuzaklar
 - **ON_RESUME:** `LifecycleEventEffect(ON_RESUME)` ilk composition'da da tetiklenir; eskiden `resync()` bu yüzden current-question'ı ikinci kez çağırıyordu. Şimdi `QuizScreen` ON_STOP'ta `viewModel.onAppBackgrounded()` çağırır; `resync()` bayrak yoksa hiçbir şey yapmaz, varsa bayrağı sıfırlar. Yalnızca ON_PAUSE (ör. dialog) eşitleme tetiklemez. Testler: `QuizViewModelTest` (resyncWithoutBackgrounding…, resyncRunsOncePerBackgroundTrip), `QuizLifecycleTest`.
@@ -44,3 +46,19 @@ Kullanıcının son iş mesajı 4 maddeydi (1: bağımlılıklar + release/R8 tu
 - **Gerçek API:** quiz oynamak prod sunucuda oturum açar (Render, ilk istek 30–60 sn sürebilir). İsim kaydedilmedikçe skor tablosuna girmez.
 - **Skor tablosu (bilinçli tercih):** Aynı isim tekrarı ve vurgu bilinçli tercih. Her oyun ayrı satır olarak gösterilir, aynı isim birden fazla kez görünebilir. Vurgu yalnızca bu oturumun satırındadır (`isMe`), 0 puanlı olsa bile. Bu davranış kod değişikliği gerektirmez.
 - **Sürüm kontrolü:** son kontrol edilen en güncel kararlı sürümler bu dosyadaki listelerdir; Retrofit 3.0.0, Turbine 1.2.1, activity-compose 1.13.0, AGP 9.4.1 zaten güncel idi.
+
+## 6. API süre ölçümü (sıcak sunucu)
+- Kod: `app/src/androidTest/.../ApiLatencyBenchmark.kt` — yalnızca debug test APK'sında bulunur, release'e girmez. Gerçek API'ye gider (her turda bir deneme oturumu açar), bu yüzden `latency=true` verilmedikçe atlanır:
+  `./gradlew connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.rapidquiz.app.ApiLatencyBenchmark -Pandroid.testInstrumentationRunnerArguments.latency=true` (turu `-P...rounds=N` ile değiştir). Sonuç: `adb logcat -s ApiLatency`.
+- Sonuçlar (2026-10-12, emülatör, 5 tur, sunucu SICAKTI; ms):
+
+| Çağrı | İlk | Sıcak medyan | Min–maks |
+|---|---|---|---|
+| categories | 1185 | 119 | 111–492 |
+| create_session | 160 | 124 | 118–128 |
+| current_question | 141 | 169 | 139–318 |
+| answer | 139 | 221 | 129–241 |
+| leaderboard | 111 | 125 | 110–128 |
+
+- "İlk" categories değeri DNS+TLS kurulumunu içerir. Soğuk başlangıç (sunucu uykudayken) ölçülmedi, bkz. Bölüm 4 madde 1.
+- Yükleme göstergeleri: `CircularProgressIndicator` Home/Quiz/Result/`LoadingView`'de; sunucu uyanıyorsa 3 sn sonra `WakingBanner`.
