@@ -70,6 +70,15 @@ class ResultScreenTest {
         assertEquals(emptyList<String>(), repo.savedNames)
     }
 
+    @Test fun inappropriateNameShowsPoliteErrorAndIsNotSent() {
+        launch()
+        typeName("Siktir")
+        rule.onNodeWithText("Bu isim herkese açık skor tablosu için uygun görünmüyor. Lütfen başka bir isim dene.")
+            .assertIsDisplayed()
+        rule.onNodeWithText("Kaydet").assertIsNotEnabled()
+        assertEquals(emptyList<String>(), repo.savedNames)
+    }
+
     @Test fun tooLongNameIsRejected() {
         launch()
         typeName("a".repeat(21))

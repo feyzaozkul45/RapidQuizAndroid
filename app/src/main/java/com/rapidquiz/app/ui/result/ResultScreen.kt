@@ -121,6 +121,7 @@ fun NameForm(state: ResultUiState, onNameChange: (String) -> Unit, onSave: () ->
                 PlayerName.Problem.TOO_SHORT -> R.string.name_too_short
                 PlayerName.Problem.TOO_LONG -> R.string.name_too_long
                 PlayerName.Problem.INVALID_CHARS -> R.string.name_invalid_chars
+                PlayerName.Problem.INAPPROPRIATE -> R.string.name_inappropriate
             },
         )
     }

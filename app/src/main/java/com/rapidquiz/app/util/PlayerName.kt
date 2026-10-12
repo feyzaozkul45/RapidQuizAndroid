@@ -8,7 +8,7 @@ object PlayerName {
 
     fun normalize(raw: String) = raw.trim().replace(whitespace, " ")
 
-    enum class Problem { TOO_SHORT, TOO_LONG, INVALID_CHARS }
+    enum class Problem { TOO_SHORT, TOO_LONG, INVALID_CHARS, INAPPROPRIATE }
 
     fun validate(raw: String): Problem? {
         val n = normalize(raw)
@@ -17,6 +17,7 @@ object PlayerName {
             len < MIN -> Problem.TOO_SHORT
             len > MAX -> Problem.TOO_LONG
             !pattern.matches(n) -> Problem.INVALID_CHARS
+            ProfanityFilter.containsProfanity(n) -> Problem.INAPPROPRIATE
             else -> null
         }
     }

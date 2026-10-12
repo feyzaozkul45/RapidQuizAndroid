@@ -57,6 +57,7 @@
     <string name="result_play_again">Tekrar oyna</string>
     <string name="name_too_short">İsim en az 2 karakter olmalı.</string>
     <string name="name_too_long">İsim en fazla 20 karakter olabilir.</string>
+    <string name="name_inappropriate">Bu isim herkese açık skor tablosu için uygun görünmüyor. Lütfen başka bir isim dene.</string>
     <string name="name_invalid_chars">Yalnızca harf, rakam, boşluk ve tire kullanabilirsin.</string>
 
     <!-- Skor tablosu -->
