@@ -1,8 +1,19 @@
+import java.io.StringReader
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }
+
+// Kök dizindeki keystore.properties yoksa release imzasız kalır, build bozulmaz.
+// providers.fileContents ile okunur: configuration cache dosya değişimini izler.
+val keystoreProps: Properties? = providers
+    .fileContents(rootProject.layout.projectDirectory.file("keystore.properties"))
+    .asText
+    .orNull
+    ?.let { text -> Properties().apply { load(StringReader(text)) } }
 
 android {
     namespace = "com.rapidquiz.app"
@@ -23,10 +34,22 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (keystoreProps != null) {
+            create("release") {
+                storeFile = file(keystoreProps.getProperty("storeFile"))
+                storePassword = keystoreProps.getProperty("storePassword")
+                keyAlias = keystoreProps.getProperty("keyAlias")
+                keyPassword = keystoreProps.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         // Yerel backend ile denemek için (emülatörde 10.0.2.2 = bilgisayarın localhost'u):
         // debug { buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8000/api/v1/\"") }
         release {
+            signingConfig = signingConfigs.findByName("release")
             optimization {
                 enable = true
             }
