@@ -15,3 +15,6 @@ Proje gereksinimleri: docs/Rapid Quiz.docx (API: rapid-quiz-backend/docs/PROJECT
 ## Komutlar
 - ./gradlew test · ./gradlew connectedAndroidTest
 - Windows'ta JAVA_HOME: C:\Program Files\Android\Android Studio\jbr
+
+## Oturum devri
+- Çalışmaya başlamadan önce docs/HANDOFF.md dosyasını oku (durum, kalan işler, teknik tuzaklar orada).
