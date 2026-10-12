@@ -30,6 +30,7 @@ class FakeQuizRepository : QuizRepository {
     val savedNames = mutableListOf<String>()
     var sessionError: Throwable? = null
     var createSessionCalls = 0
+    var lastSessionCategory: String? = null
 
     /** Sunucu gibi: cevaplanana kadar aynı soruyu döndürür (ON_RESUME eşitlemesi buna dayanır). */
     override suspend fun currentQuestion(sessionId: String): Question {
@@ -52,6 +53,7 @@ class FakeQuizRepository : QuizRepository {
 
     override suspend fun createSession(category: String): SessionCreated {
         createSessionCalls++
+        lastSessionCategory = category
         sessionError?.let { throw it }
         return SessionCreated("new-session", category, 20, 5)
     }
