@@ -76,6 +76,7 @@ fun QuizScreen(
         onDispose { view.keepScreenOn = false }
     }
 
+    LifecycleEventEffect(Lifecycle.Event.ON_STOP) { viewModel.onAppBackgrounded() }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { viewModel.resync() }
 
     val finished = state is QuizUiState.Finished

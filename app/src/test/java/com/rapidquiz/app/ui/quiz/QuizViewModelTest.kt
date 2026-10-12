@@ -191,15 +191,45 @@ class QuizViewModelTest {
         }
         val vm = vm(repo)
         runCurrent()
+        vm.onAppBackgrounded()
         vm.resync()
         runCurrent()
         assertEquals(2, repo.questionCalls)
         assertEquals(1_000L, (vm.state.value as QuizUiState.Question).remainingMs)
         assertNull((vm.state.value as QuizUiState.Question).selectedId)
+        vm.onAppBackgrounded()
         vm.submit(1)
         runCurrent()
         vm.resync() // cevap gönderilirken yok sayılır
         runCurrent()
         assertEquals(2, repo.questionCalls)
+    }
+
+    @Test fun resyncWithoutBackgroundingDoesNotRefetch() = runTest(dispatcher) {
+        val repo = FakeRepo().apply { questions += Result.success(question(11)) }
+        val vm = vm(repo)
+        runCurrent()
+        vm.resync() // ilk açılıştaki ON_RESUME
+        runCurrent()
+        assertEquals(1, repo.questionCalls)
+        vm.submit(1)
+        advanceUntilIdle()
+    }
+
+    @Test fun resyncRunsOncePerBackgroundTrip() = runTest(dispatcher) {
+        val repo = FakeRepo().apply {
+            questions += Result.success(question(11))
+            questions += Result.success(question(11, remaining = 4.0))
+        }
+        val vm = vm(repo)
+        runCurrent()
+        vm.onAppBackgrounded()
+        vm.resync()
+        runCurrent()
+        vm.resync() // ikinci ON_RESUME (ör. dialog kapanışı) tekrar çağırmaz
+        runCurrent()
+        assertEquals(2, repo.questionCalls)
+        vm.submit(1)
+        advanceUntilIdle()
     }
 }

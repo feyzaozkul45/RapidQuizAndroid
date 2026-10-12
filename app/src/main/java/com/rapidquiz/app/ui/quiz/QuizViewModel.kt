@@ -53,6 +53,7 @@ class QuizViewModel(
     val state: StateFlow<QuizUiState> = _state.asStateFlow()
 
     private var score = 0
+    private var backgrounded = false
     private var loadJob: Job? = null
     private var tickJob: Job? = null
 
@@ -122,8 +123,18 @@ class QuizViewModel(
         }
     }
 
-    /** Uygulama arka plandan dönünce çağrılır (süre sunucuda akmaya devam etti). */
+    /** Ekran görünmez olduğunda (ON_STOP) çağrılır; [resync] yalnızca bundan sonra çalışır. */
+    fun onAppBackgrounded() {
+        backgrounded = true
+    }
+
+    /**
+     * Uygulama arka plandan dönünce çağrılır (süre sunucuda akmaya devam etti).
+     * İlk açılışta ya da arka plana gidilmediyse hiçbir şey yapmaz; yoksa current-question iki kez çağrılır.
+     */
     fun resync() {
+        if (!backgrounded) return
+        backgrounded = false
         val cur = _state.value
         if (cur is QuizUiState.Question && !cur.submitting) loadQuestion()
     }
