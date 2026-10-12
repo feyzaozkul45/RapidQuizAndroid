@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.rapidquiz.app.data.model.Category
 import com.rapidquiz.app.data.model.Leaderboard
 import com.rapidquiz.app.ui.FakeQuizRepository.Companion.entry
 import com.rapidquiz.app.ui.leaderboard.LeaderboardScreen
@@ -63,6 +64,15 @@ class LeaderboardScreenTest {
 
         rule.waitUntil(5_000) { rule.rowExists("Ben") }
         assertFalse(rule.onAllNodesWithTextExists("Senin sıran"))
+    }
+
+    @Test fun selectedChipIsScrolledIntoView() {
+        repo.categoryList = (1..15).map { Category(it, "Kategori $it", "k$it", null, "science", it) }
+        repo.boards["k15"] = Leaderboard("k15", listOf(entry(1, "Ayşe", 1800)))
+        launch(category = "k15")
+
+        rule.waitUntil(5_000) { rule.rowExists("Ayşe") }
+        rule.onNodeWithText("Kategori 15").assertIsDisplayed()
     }
 
     @Test fun emptyBoardShowsMessage() {
