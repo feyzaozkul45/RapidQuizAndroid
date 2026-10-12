@@ -61,6 +61,7 @@ fun ResultScreen(
         val result = state.result
         when {
             state.loading -> LoadingView(modifier)
+
             result == null -> ErrorView(
                 state.errorCode ?: "unknown",
                 modifier,
@@ -68,6 +69,7 @@ fun ResultScreen(
                 secondaryLabel = stringResource(R.string.home),
                 onSecondary = onHome,
             )
+
             else -> Column(
                 modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,

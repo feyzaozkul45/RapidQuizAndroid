@@ -19,7 +19,7 @@ Son güncelleme: 2026-10-12. Gereksinimler: `docs/Rapid Quiz.docx`. Kurallar: `C
 
 ## 2. Commit'lenmemiş / doğrulanmamış değişiklikler
 Yok. Çalışma ağacı temiz olmalı (`git status`).
-Testlerin son durumu (bu dosya yazılmadan hemen önce koşuldu): `./gradlew test connectedDebugAndroidTest` → **38 birim testi + 23 UI testi, hepsi geçti**. Emülatör: `emulator-5554` (Medium_Phone).
+Testlerin son durumu: `./gradlew spotlessCheck test connectedDebugAndroidTest` → **44 birim testi + 28 UI testi geçti** (29. test `ApiLatencyBenchmark`, `latency=true` verilmedikçe bilerek atlanır; raporda "failure" gibi görünür ama Assume atlamasıdır). Emülatör: `emulator-5554` (Medium_Phone).
 
 ## 3. Push durumu
 - `origin/main` (https://github.com/feyzaozkul45/RapidQuizAndroid.git) güncel; push durumunu doğrulamak için: `git log origin/main..main`. Kullanıcı push'u her seferinde sohbette açıkça onaylar (force push yok).
@@ -29,8 +29,9 @@ Testlerin son durumu (bu dosya yazılmadan hemen önce koşuldu): `./gradlew tes
 1. **Soğuk başlangıç süresi ölçülmedi — bilerek.** Sunucu eğitim projesi için hocanın sunucusu; kullanıcı prod'a ek ölçüm isteği atılmamasını istedi. Tekrar ölçülmesin (kullanıcı yeniden istemedikçe).
 2. Doküman Bölüm 12 yayın hazırlığı kalanları: mağaza metni, ekran görüntüleri, Play "Data safety" bilgisi (hesap/kişisel veri yok, yalnızca takma ad herkese açık).
 3. Elle kontrol listesi (doküman Bölüm 11): uçak modu (hata + tekrar dene), soru sırasında arka plana atma, 15 dk sonra soğuk başlangıç, 360 dp ekran, büyük yazı tipi, geri tuşu onayı. Koyu temada ✓/✕ renkleri ve TalkBack okuması gözle/gerçek cihazda doğrulanmadı.
-4. Doküman Bölüm 11 / 13'te geçen ktlint/spotless henüz kurulmadı (CLAUDE.md'den `ktlintCheck` çıkarıldı). İstenirse ekle.
-5. Compose UI tarafında henüz test yok: Ana ekran (kategori kartı → quiz başlatma). Dokümandaki "tam bir quiz turu" testi `QuizScreenTest`'te var ama Home → Quiz gezinmesi uçtan uca test edilmedi.
+4. Kod biçimi: Spotless + ktlint 1.8.0 kuruldu (`./gradlew spotlessCheck` / `spotlessApply`, kurallar `.editorconfig` + kök `build.gradle.kts`). `ktlint_official` stili, sondaki virgüller korunur (`editorConfigOverride`), max satır 140.
+5. Home → Quiz gezinmesi `HomeNavigationTest` ile test edildi (3 test).
+6. Mağaza metni ve Data safety: `docs/store.md`. Ekran görüntülerini kullanıcı alacak; elle kontrol listesi kullanıcıda.
 
 ## 5. Teknik kararlar ve tuzaklar
 - **ON_RESUME:** `LifecycleEventEffect(ON_RESUME)` ilk composition'da da tetiklenir; eskiden `resync()` bu yüzden current-question'ı ikinci kez çağırıyordu. Şimdi `QuizScreen` ON_STOP'ta `viewModel.onAppBackgrounded()` çağırır; `resync()` bayrak yoksa hiçbir şey yapmaz, varsa bayrağı sıfırlar. Yalnızca ON_PAUSE (ör. dialog) eşitleme tetiklemez. Testler: `QuizViewModelTest` (resyncWithoutBackgrounding…, resyncRunsOncePerBackgroundTrip), `QuizLifecycleTest`.

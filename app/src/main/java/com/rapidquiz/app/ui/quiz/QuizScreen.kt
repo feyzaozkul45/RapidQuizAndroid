@@ -13,10 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -40,10 +44,6 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Icon
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -61,11 +61,7 @@ private val CorrectGreen = Color(0xFF2E7D32)
 private val WrongRed = Color(0xFFC62828)
 
 @Composable
-fun QuizScreen(
-    viewModel: QuizViewModel,
-    onFinished: () -> Unit,
-    onExit: () -> Unit,
-) {
+fun QuizScreen(viewModel: QuizViewModel, onFinished: () -> Unit, onExit: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var confirmExit by remember { mutableStateOf(false) }
 
@@ -90,7 +86,10 @@ fun QuizScreen(
             title = { Text(stringResource(R.string.quiz_exit_title)) },
             text = { Text(stringResource(R.string.quiz_exit_message)) },
             confirmButton = {
-                TextButton(onClick = { confirmExit = false; onExit() }) { Text(stringResource(R.string.quiz_exit_confirm)) }
+                TextButton(onClick = {
+                    confirmExit = false
+                    onExit()
+                }) { Text(stringResource(R.string.quiz_exit_confirm)) }
             },
             dismissButton = {
                 TextButton(onClick = { confirmExit = false }) { Text(stringResource(R.string.quiz_exit_cancel)) }
@@ -102,6 +101,7 @@ fun QuizScreen(
         val modifier = Modifier.padding(padding)
         when (val s = state) {
             QuizUiState.Loading, QuizUiState.Finished -> LoadingView(modifier)
+
             is QuizUiState.Error ->
                 if (isSessionGone(s.code)) {
                     ErrorView(s.code, modifier, secondaryLabel = stringResource(R.string.home), onSecondary = onExit)
@@ -114,6 +114,7 @@ fun QuizScreen(
                         onSecondary = onExit,
                     )
                 }
+
             is QuizUiState.Question -> QuestionContent(
                 modifier = modifier,
                 q = s.q,
@@ -125,6 +126,7 @@ fun QuizScreen(
                 enabled = !s.submitting,
                 onChoice = { viewModel.submit(it) },
             )
+
             is QuizUiState.Feedback -> QuestionContent(
                 modifier = modifier,
                 q = s.q,
@@ -241,17 +243,24 @@ enum class ChoiceState { Idle, Selected, Correct, Wrong }
 fun ChoiceButton(choice: Choice, enabled: Boolean, state: ChoiceState, onClick: () -> Unit) {
     val colors = when (state) {
         ChoiceState.Correct -> ButtonDefaults.buttonColors(
-            containerColor = CorrectGreen, contentColor = Color.White,
-            disabledContainerColor = CorrectGreen, disabledContentColor = Color.White,
+            containerColor = CorrectGreen,
+            contentColor = Color.White,
+            disabledContainerColor = CorrectGreen,
+            disabledContentColor = Color.White,
         )
+
         ChoiceState.Wrong -> ButtonDefaults.buttonColors(
-            containerColor = WrongRed, contentColor = Color.White,
-            disabledContainerColor = WrongRed, disabledContentColor = Color.White,
+            containerColor = WrongRed,
+            contentColor = Color.White,
+            disabledContainerColor = WrongRed,
+            disabledContentColor = Color.White,
         )
+
         ChoiceState.Selected -> ButtonDefaults.buttonColors(
             disabledContainerColor = MaterialTheme.colorScheme.primary,
             disabledContentColor = MaterialTheme.colorScheme.onPrimary,
         )
+
         ChoiceState.Idle -> ButtonDefaults.filledTonalButtonColors()
     }
     val stateText = when (state) {

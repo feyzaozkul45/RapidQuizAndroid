@@ -34,11 +34,8 @@ data class LeaderboardUiState(
  * [initialCategory] ve [sessionId] yalnızca bir oturumdan (sonuç ekranı) açıldığında dolu gelir.
  * session_id yalnızca o oturumun kategorisi için gönderilir.
  */
-class LeaderboardViewModel(
-    private val repo: QuizRepository,
-    private val initialCategory: String?,
-    private val sessionId: String?,
-) : ViewModel() {
+class LeaderboardViewModel(private val repo: QuizRepository, private val initialCategory: String?, private val sessionId: String?) :
+    ViewModel() {
     private val _state = MutableStateFlow(LeaderboardUiState())
     val state: StateFlow<LeaderboardUiState> = _state.asStateFlow()
 

@@ -46,7 +46,8 @@ data class Question(
 @Serializable
 data class AnswerRequest(
     @SerialName("question_id") val questionId: Int,
-    @SerialName("choice_id") val choiceId: Int?, // süre dolduysa null
+    // süre dolduysa null
+    @SerialName("choice_id") val choiceId: Int?,
 )
 
 @Serializable
@@ -98,5 +99,6 @@ data class LeaderboardEntry(
 data class Leaderboard(
     val category: String,
     val entries: List<LeaderboardEntry>,
-    val me: LeaderboardEntry? = null, // yalnızca session_id verildiyse ve oturum tabloda ise
+    // yalnızca session_id verildiyse ve oturum tabloda ise
+    val me: LeaderboardEntry? = null,
 )

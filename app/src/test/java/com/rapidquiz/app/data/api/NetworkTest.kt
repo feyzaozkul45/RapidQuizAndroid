@@ -31,7 +31,12 @@ class NetworkTest {
         .client(
             OkHttpClient.Builder()
                 .addInterceptor(ClientHeadersInterceptor("9.9"))
-                .addInterceptor(ColdStartInterceptor(state, elapsedRealtime = { now }, sleep = { sleeps += it; now += it }))
+                .addInterceptor(
+                    ColdStartInterceptor(state, elapsedRealtime = { now }, sleep = {
+                        sleeps += it
+                        now += it
+                    }),
+                )
                 .build(),
         )
         .addConverterFactory(ApiJson.asConverterFactory("application/json".toMediaType()))

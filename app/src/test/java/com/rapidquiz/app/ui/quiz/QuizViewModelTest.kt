@@ -38,9 +38,14 @@ class QuizViewModelTest {
     @After fun tearDown() = Dispatchers.resetMain()
 
     private fun question(id: Int, position: Int = 0, remaining: Double = 5.0) = Question(
-        position = position, total = 2, questionId = id, text = "Soru $id",
+        position = position,
+        total = 2,
+        questionId = id,
+        text = "Soru $id",
         choices = listOf(Choice(1, "A"), Choice(2, "B"), Choice(3, "C"), Choice(4, "D")),
-        timeLimitSeconds = 5, servedAt = "2026-10-01T10:00:00Z", remainingSeconds = remaining,
+        timeLimitSeconds = 5,
+        servedAt = "2026-10-01T10:00:00Z",
+        remainingSeconds = remaining,
     )
 
     private fun result(last: Boolean = false, score: Int = 100) =

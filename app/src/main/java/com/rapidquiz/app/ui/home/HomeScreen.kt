@@ -12,13 +12,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.HistoryEdu
-import androidx.compose.material.icons.automirrored.filled.MenuBook
-import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Movie
+import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Park
 import androidx.compose.material.icons.filled.Public
@@ -113,7 +113,9 @@ fun HomeScreen(
         val modifier = Modifier.padding(padding)
         when {
             state.loading -> LoadingView(modifier)
+
             state.errorCode != null -> ErrorView(state.errorCode!!, modifier, onRetry = viewModel::load)
+
             else -> LazyColumn(
                 modifier = modifier,
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),

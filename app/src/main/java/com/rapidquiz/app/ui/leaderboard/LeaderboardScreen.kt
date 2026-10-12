@@ -76,8 +76,11 @@ fun LeaderboardScreen(viewModel: LeaderboardViewModel, onBack: () -> Unit) {
             ) {
                 when {
                     state.loading -> LoadingView()
+
                     state.errorCode != null -> ErrorView(state.errorCode!!, onRetry = viewModel::retry)
+
                     state.entries.isEmpty() -> EmptyBoard()
+
                     else -> LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(16.dp),
@@ -139,7 +142,10 @@ fun CategoryChips(categories: List<Pair<String, String>>, selected: String?, onS
 fun LeaderboardRow(entry: LeaderboardEntry) {
     val label = stringResource(
         if (entry.isMe) R.string.leaderboard_row_description_me else R.string.leaderboard_row_description,
-        entry.rank, entry.playerName, entry.score, entry.correctCount,
+        entry.rank,
+        entry.playerName,
+        entry.score,
+        entry.correctCount,
     )
     Card(
         modifier = Modifier.fillMaxWidth().clearAndSetSemantics { contentDescription = label },

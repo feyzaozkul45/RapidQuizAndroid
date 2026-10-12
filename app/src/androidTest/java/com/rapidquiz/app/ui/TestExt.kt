@@ -3,8 +3,7 @@ package com.rapidquiz.app.ui
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeTestRule
 
-fun ComposeTestRule.onAllNodesWithTextExists(text: String): Boolean =
-    onAllNodes(hasText(text)).fetchSemanticsNodes().isNotEmpty()
+fun ComposeTestRule.onAllNodesWithTextExists(text: String): Boolean = onAllNodes(hasText(text)).fetchSemanticsNodes().isNotEmpty()
 
 /** Skor tablosu satırları tek bir erişilebilirlik düğümüdür; içeriğine contentDescription ile bakılır. */
 fun ComposeTestRule.rowExists(text: String): Boolean =

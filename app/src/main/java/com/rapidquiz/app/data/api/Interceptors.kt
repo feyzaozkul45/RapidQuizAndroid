@@ -1,20 +1,19 @@
 package com.rapidquiz.app.data.api
 
 import android.os.SystemClock
-import okhttp3.Interceptor
-import okhttp3.Response
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import okhttp3.Interceptor
+import okhttp3.Response
 
 class ClientHeadersInterceptor(private val clientVersion: String) : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response =
-        chain.proceed(
-            chain.request().newBuilder()
-                .header("X-Client-Type", "android")
-                .header("X-Client-Version", clientVersion)
-                .header("Accept", "application/json")
-                .build(),
-        )
+    override fun intercept(chain: Interceptor.Chain): Response = chain.proceed(
+        chain.request().newBuilder()
+            .header("X-Client-Type", "android")
+            .header("X-Client-Version", clientVersion)
+            .header("Accept", "application/json")
+            .build(),
+    )
 }
 
 /** Sunucunun en az bir kez yanıt verip vermediğini tutar (Render ücretsiz planda uyur). */
@@ -51,8 +50,7 @@ class ColdStartInterceptor(
         }
     }
 
-    private fun elapsedTooLong(startedAt: Long) =
-        elapsedRealtime() - startedAt + RETRY_DELAY_MS >= TOTAL_BUDGET_MS
+    private fun elapsedTooLong(startedAt: Long) = elapsedRealtime() - startedAt + RETRY_DELAY_MS >= TOTAL_BUDGET_MS
 
     private companion object {
         const val AWAKE_TIMEOUT_S = 10

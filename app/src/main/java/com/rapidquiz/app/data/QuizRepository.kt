@@ -26,10 +26,7 @@ interface QuizRepository {
     suspend fun rememberQuestion(category: String, questionId: Int)
 }
 
-class ApiQuizRepository(
-    private val api: RapidQuizApi,
-    private val recent: RecentQuestionsStore,
-) : QuizRepository {
+class ApiQuizRepository(private val api: RapidQuizApi, private val recent: RecentQuestionsStore) : QuizRepository {
     override suspend fun categories() = call { api.categories() }
 
     override suspend fun createSession(category: String) = call {
@@ -42,8 +39,7 @@ class ApiQuizRepository(
 
     override suspend fun result(sessionId: String) = call { api.result(sessionId) }
 
-    override suspend fun setPlayerName(sessionId: String, name: String) =
-        call { api.setPlayerName(sessionId, PlayerNameRequest(name)) }
+    override suspend fun setPlayerName(sessionId: String, name: String) = call { api.setPlayerName(sessionId, PlayerNameRequest(name)) }
 
     override suspend fun leaderboard(category: String, sessionId: String?) =
         call { api.leaderboard(category = category, limit = 10, sessionId = sessionId) }

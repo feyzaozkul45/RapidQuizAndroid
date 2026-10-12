@@ -18,8 +18,7 @@ object RecentQuestions {
     /** Zaten varsa önce siler, sonra sona ekler; son [MAX] kaydı tutar. */
     fun add(list: List<Int>, id: Int): List<Int> = (list.filter { it != id } + id).takeLast(MAX)
 
-    fun parse(raw: String?): List<Int> =
-        raw?.split(',')?.mapNotNull { it.trim().toIntOrNull() }?.filter { it > 0 }?.takeLast(MAX).orEmpty()
+    fun parse(raw: String?): List<Int> = raw?.split(',')?.mapNotNull { it.trim().toIntOrNull() }?.filter { it > 0 }?.takeLast(MAX).orEmpty()
 
     fun serialize(list: List<Int>): String = list.joinToString(",")
 }

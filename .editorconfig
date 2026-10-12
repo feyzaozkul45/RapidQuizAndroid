@@ -1,0 +1,13 @@
+root = true
+
+[*]
+charset = utf-8
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+
+[*.{kt,kts}]
+ktlint_code_style = ktlint_official
+max_line_length = 140
+# Compose: @Composable fonksiyonlar PascalCase olabilir.
+ktlint_function_naming_ignore_when_annotated_with = Composable

@@ -16,8 +16,7 @@ class RecentQuestionsTest {
         assertEquals(41, result.last())
     }
 
-    @Test fun parseDropsNonPositiveAndGarbage() =
-        assertEquals(listOf(5, 7), RecentQuestions.parse("5,0,-3,x,7"))
+    @Test fun parseDropsNonPositiveAndGarbage() = assertEquals(listOf(5, 7), RecentQuestions.parse("5,0,-3,x,7"))
 
     @Test fun parseNullIsEmpty() = assertEquals(emptyList<Int>(), RecentQuestions.parse(null))
 

@@ -13,7 +13,7 @@ Proje gereksinimleri: docs/Rapid Quiz.docx (API: rapid-quiz-backend/docs/PROJECT
 - Paket adı / applicationId: com.rapidquiz.app
 
 ## Komutlar
-- ./gradlew test · ./gradlew connectedAndroidTest
+- ./gradlew test · ./gradlew connectedAndroidTest · ./gradlew spotlessCheck (biçim: spotlessApply)
 - Windows'ta JAVA_HOME: C:\Program Files\Android\Android Studio\jbr
 
 ## Oturum devri

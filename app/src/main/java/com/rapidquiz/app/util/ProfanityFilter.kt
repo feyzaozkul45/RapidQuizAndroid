@@ -38,14 +38,19 @@ object ProfanityFilter {
     /** Küçük harf, aksansız, Türkçe 'ı/İ' → 'i', rakam→harf (leet) ve harf/rakam dışını atar. */
     private fun fold(s: String): String {
         val lowered = buildString {
-            for (c in s) append(
-                when (c) {
-                    'İ', 'I', 'ı' -> 'i'
-                    else -> c.lowercaseChar()
-                },
-            )
+            for (c in s) {
+                append(
+                    when (c) {
+                        'İ', 'I', 'ı' -> 'i'
+                        else -> c.lowercaseChar()
+                    },
+                )
+            }
         }
-        val noMarks = Normalizer.normalize(lowered, Normalizer.Form.NFD).filter { Character.getType(it) != Character.NON_SPACING_MARK.toInt() }
+        val noMarks = Normalizer.normalize(lowered, Normalizer.Form.NFD).filter {
+            Character.getType(it) !=
+                Character.NON_SPACING_MARK.toInt()
+        }
         return noMarks.map {
             when (it) {
                 '0' -> 'o'

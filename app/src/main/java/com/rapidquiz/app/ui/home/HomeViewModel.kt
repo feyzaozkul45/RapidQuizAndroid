@@ -31,8 +31,8 @@ class HomeViewModel(private val repo: QuizRepository) : ViewModel() {
     private val _state = MutableStateFlow(HomeUiState())
     val state: StateFlow<HomeUiState> = _state.asStateFlow()
 
-    private val _events = Channel<SessionCreated>(Channel.BUFFERED)
-    val sessionStarted = _events.receiveAsFlow()
+    private val startedSessions = Channel<SessionCreated>(Channel.BUFFERED)
+    val sessionStarted = startedSessions.receiveAsFlow()
 
     init {
         load()
@@ -57,7 +57,7 @@ class HomeViewModel(private val repo: QuizRepository) : ViewModel() {
         _state.update { it.copy(startingSlug = category.slug, startErrorCode = null) }
         viewModelScope.launch {
             try {
-                _events.send(repo.createSession(category.slug))
+                startedSessions.send(repo.createSession(category.slug))
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Throwable) {

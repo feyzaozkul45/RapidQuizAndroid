@@ -1,12 +1,12 @@
 package com.rapidquiz.app.data.api
 
+import java.io.IOException
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
-import java.io.IOException
 
 class ApiErrorTest {
     private fun http(status: Int, body: String) =
